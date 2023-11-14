@@ -38,8 +38,6 @@ int main()
 		c_occur: (nc++, nall++);
 	}
 
-
-
 	printf("Character %c was entered\n", c);
 	printf("Number of occurences of characters:\n");
 	printf("a : %d\n", na);
