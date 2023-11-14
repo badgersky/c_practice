@@ -22,4 +22,5 @@ int main() {
 
 		printf(" %c", c);
 	}
-}
+	fclose(fp);
+}
