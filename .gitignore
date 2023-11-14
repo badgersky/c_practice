@@ -471,8 +471,8 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
-lab1.sln
-lab1.vcxproj
-lab1.vcxproj.filters
+*.sln
+*.vcxproj
+*.vcxproj.filters
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,c,c++
