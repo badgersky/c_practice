@@ -12,10 +12,11 @@ int main() {
 	}
 	
 	char c;
+	int ret;
 	while (1) {
-		fscanf(fp, "%c", &c);
+		ret = fscanf(fp, "%c", &c);
 
-		if (c == '\n') {
+		if (ret == -1) {
 			break;
 		}
 
