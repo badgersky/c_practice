@@ -6,11 +6,12 @@
 
 void validate_n_m(int const *np, int const *mp, int ret);
 int validate_a_b_epx(double *a, double *b, double const *eps, int ret);
-void series(double x, int m, double eps, int *condition);
+void series(double x, int m, double eps, int *condition, FILE *f);
 
 int main() {
     int n, m, ret, ab_check, condition;
-    double a, b, eps, dx, i;
+    double a, b, eps, dx, x;
+    FILE *file = NULL;
 
     printf("Enter n, m:\n");  //m n input and validation
     ret = scanf("%d %d", &n, &m);
@@ -25,11 +26,20 @@ int main() {
     }
 
     dx = (b - a) / n;
-    i = a;
-    while (i <= b) {
-        series(i, m, eps, &condition);
-        i += dx;
+    x = a;
+
+    file = fopen("results", "w");
+    if (!file) {
+        printf("File not open");
+        exit(2);
     }
+
+    while (x <= b) {
+        series(x, m, eps, &condition, file);
+        x += dx;
+    }
+
+    fclose(file);
 }
 
 void validate_n_m(int const *np, int const *mp, int ret) {
@@ -61,7 +71,7 @@ int validate_a_b_epx(double *a, double *b, double const *eps, int ret) {
     return 1;
 }
 
-void series(double x, int m, double eps, int *condition) {
+void series(double x, int m, double eps, int *condition, FILE *f) {
     double strict_v = pow((1 - x), -3./2.);
     int i = 1;
     double prev = 1., res = 1., next;
@@ -81,5 +91,7 @@ void series(double x, int m, double eps, int *condition) {
         res += next * pow(x, i);
         i++;
     }
-    printf("%lf\t%lf\t%lf\t%d\t%d\n", x, res, strict_v, i, *condition);
+
+    fprintf(f, "|\t%lf\t|\t%lf\t|\t%lf\t|\t%d\t|\t%d\t|\n", x, res, strict_v, i, *condition);
+    printf("|\t%lf\t|\t%lf\t|\t%lf\t|\t%d\t|\t%d\t|\n", x, res, strict_v, i, *condition);
 }
