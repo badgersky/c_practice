@@ -5,12 +5,12 @@
 #pragma warning (disable: 4996)
 
 void validate_n_m(int const *np, int const *mp, int ret);
-int validate_a_b_epx(double *a, double *b, double const *eps, int ret);
+int validate_a_b_epx(double *a, double *b, double const *eps, int ret, double const *err);
 void series(double x, int m, double eps, int *condition, FILE *f);
 
 int main() {
-    int n, m, ret, ab_check, condition;
-    double a, b, eps, dx, x;
+    int n, m, ret, condition;
+    double a, b, eps, dx, x, err = 1e-14;
     FILE *file = NULL;
 
     printf("Enter n, m:\n");  //m n input and validation
@@ -19,14 +19,10 @@ int main() {
 
     printf("Enter a, b - endpoints of interval, and eps - accuracy:\n");  //a b eps input and validation
     ret = scanf("%lf %lf %lf", &a, &b, &eps);
-    ab_check = validate_a_b_epx(&a, &b, &eps, ret);
-    if (ab_check == 0) {
+    if (validate_a_b_epx(&a, &b, &eps, ret, &err) == 0) {
         printf("Invalid input");
         exit(2);
     }
-
-    dx = (b - a) / n;
-    x = a;
 
     file = fopen("results", "w");
     if (!file) {
@@ -34,6 +30,14 @@ int main() {
         exit(2);
     }
 
+    if (fabs(a - b) <= err) {
+        series(a, m, eps, &condition, file);
+        fclose(file);
+        exit(0);
+    }
+
+    dx = (b - a) / n;
+    x = a;
     while (x <= b) {
         series(x, m, eps, &condition, file);
         x += dx;
@@ -49,8 +53,7 @@ void validate_n_m(int const *np, int const *mp, int ret) {
     }
 }
 
-int validate_a_b_epx(double *a, double *b, double const *eps, int ret) {
-    double err = 1e-10;
+int validate_a_b_epx(double *a, double *b, double const *eps, int ret, double const *err) {
     if (ret != 3) {
         return 0;
     }
@@ -59,13 +62,10 @@ int validate_a_b_epx(double *a, double *b, double const *eps, int ret) {
         *b = *a;
         *a = z;
     }
-    if (fabs(*a + 1.) < err || fabs(*b - 1.) < err) {
+    if (fabs(*a + 1.) < *err || fabs(*b - 1.) < *err) {
         return 0;
     }
-    if (fabs(*a - *b) < err) {
-        return 0;
-    }
-    if (*eps <= err) {
+    if (*eps <= *err) {
         return 0;
     }
     return 1;
