@@ -74,21 +74,26 @@ int validate_a_b_epx(double *a, double *b, double const *eps, int ret, double co
 void series(double x, int m, double eps, int *condition, FILE *f) {
     double strict_v = pow((1 - x), -3./2.);
     int i = 1;
-    double prev = 1., res = 1., next;
+    double prev = 1., res = 1., next, prev_res;
 
     while (1) {
+        next = prev * ((2. * i + 1.) / (2. * i));
+        prev = next;
+        prev_res = res;
+        res += next * pow(x, i);
+
+        if (i >= m && fabs(res - prev_res) < eps) {
+            *condition = 3;
+            break;
+        }
         if (i >= m) {
             *condition = 1;
             break;
         }
-        if (fabs(strict_v - res) < eps) {
+        if (fabs(res - prev_res) < eps) {
             *condition = 2;
             break;
         }
-
-        next = prev * ((2. * i + 1.) / (2. * i));
-        prev = next;
-        res += next * pow(x, i);
         i++;
     }
 
