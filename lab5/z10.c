@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
-#include <string.h>
 
 typedef struct CO {
     double re;
@@ -15,7 +13,7 @@ void add2(COMPLEX *x1, COMPLEX *x2, COMPLEX *res);
 int main()
 {
     COMPLEX co_num1, co_num2, sum;
-    double x, y, a, b, c;
+    double a, b, c;
     printf("Enter a, b, c:\n");
     scanf("%lf %lf %lf", &a, &b, &c);
     rkw(a, b, c, &co_num1, &co_num2);
