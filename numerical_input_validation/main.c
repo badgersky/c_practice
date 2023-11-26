@@ -2,21 +2,21 @@
 
 #define MAX_LINE 256
 
-int count_word(const char *p);
+int count_words(const char *str);
 char *display_message(int condition);
-int validate_input(char *p);
+int validate_input(char *str);
 void define_condition(int *con, int check, int words_num);
 
 int main() {
-    char input[MAX_LINE], *p;
+    char input[MAX_LINE], *str;
     int check, words_num, condition = 5;
 
     while (condition != 2137) {
         printf("Enter exactly three integer separated by spaces\n");
         printf("%s", display_message(condition));
-        p = fgets(input, sizeof(input), stdin);
-        check = validate_input(p);
-        words_num = count_word(p);
+        str = fgets(input, sizeof(input), stdin);
+        check = validate_input(str);
+        words_num = count_words(str);
         define_condition(&condition, check, words_num);
     }
 
@@ -51,43 +51,50 @@ char *display_message(int condition) {
     return messages[condition];
 }
 
-int validate_input(char *p) {
-    char a = *p;
+int validate_input(char *str) {
+    char a = *str;
     int res = 1;
-    while (*p != '\n') {
+    while (*str != '\n') {
         if (a > 47 && a < 58) {
-            if (*p == '-') {
+            if (*str == '-') {
                 res = 0;
             }
         }
-        if (*p == 32 || *p == 45) {
-            a = *p;
-            p++;
+        if (*str == 32 || *str == 45) {
+            a = *str;
+            str++;
             continue;
         }
-        if (*p < 48 || *p > 57) {
+        if (*str < 48 || *str > 57) {
             res = 0;
             break;
         }
-        a = *p;
-        p++;
+        a = *str;
+        str++;
     }
     return res;
 }
 
-int count_word(const char *p) {
-    char a = *p, b = ' ';
-    int l = 0;
-    while (a == ' ') {
-        a = *(++p);
+int count_words(const char *str) {
+    int count = 0, in_word = 1;
+    while (*str == 32) {
+        str++;
     }
 
-    while (*p != '\0') {
-        if (a != ' ' && b == ' ') {
-            l += 1;
+    while (*str != '\0') {
+        if (*str == 32) {
+            if (in_word) {
+                count++;
+                in_word = 0;
+            }
+        } else {
+            in_word = 1;
         }
-        a = b;
-        b = *p++;
+        str++;
     }
-    return l;
+    if (in_word) {
+        count++;
+    }
+
+    return count;
 }
