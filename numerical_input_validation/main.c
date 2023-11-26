@@ -52,9 +52,16 @@ char *display_message(int condition) {
 }
 
 int validate_input(char *p) {
+    char a = *p;
     int res = 1;
     while (*p != '\n') {
-        if (*p == 32) {
+        if (a > 47 && a < 58) {
+            if (*p == '-') {
+                res = 0;
+            }
+        }
+        if (*p == 32 || *p == 45) {
+            a = *p;
             p++;
             continue;
         }
@@ -62,6 +69,7 @@ int validate_input(char *p) {
             res = 0;
             break;
         }
+        a = *p;
         p++;
     }
     return res;
@@ -70,6 +78,10 @@ int validate_input(char *p) {
 int count_word(const char *p) {
     char a = *p, b = ' ';
     int l = 0;
+    while (a == ' ') {
+        a = *(++p);
+    }
+
     while (*p != '\0') {
         if (a != ' ' && b == ' ') {
             l += 1;
