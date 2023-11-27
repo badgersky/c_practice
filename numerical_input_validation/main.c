@@ -3,55 +3,50 @@
 #define MAX_LINE 256
 
 int count_words(const char *str);
-char *display_message(int condition);
-int validate_input(char *str);
-void define_condition(int *con, int check, int words_num);
+char *messages(int index);
+int validate_input_characters(char *str);
+void print_message(int x, int y);
 
 int main() {
     char input[MAX_LINE], *str;
-    int check, words_num, condition = 5;
+    int char_check, words_check, active = 1;
 
-    while (condition != 2137) {
+    while (active) {
         printf("Enter exactly three integer separated by spaces\n");
-        printf("%s", display_message(condition));
         str = fgets(input, sizeof(input), stdin);
-        check = validate_input(str);
-        words_num = count_words(str);
-        define_condition(&condition, check, words_num);
+        char_check = validate_input_characters(str);
+        words_check = count_words(str);
+        print_message(char_check, words_check);
+
+        if (char_check == 1 && words_check == 3) {
+            active = 0;
+        }
     }
 
     printf("\nSuccess\n");
 }
 
-void define_condition(int *con, int check, int words_num) {
-    if (check == 0 && words_num > 3) {
-        *con = 0;
-    } else if (check == 0 && words_num < 3) {
-        *con = 1;
-    } else if (check == 0 && words_num == 3) {
-        *con = 2;
-    } else if (check == 1 && words_num > 3) {
-        *con = 3;
-    } else if (check == 1 && words_num < 3) {
-        *con = 4;
-    } else {
-        *con = 2137;
+void print_message(int x, int y) {
+    if (x == 0) {
+        printf("%s", messages(x));
     }
+    if (y != 3) {
+        printf("%s", messages(y));
+    }
+    printf("\n");
 }
 
-char *display_message(int condition) {
+char *messages(int index) {
     char *messages[] = {
-            "invalid input, too many words\n",
-            "invalid input, too few words\n",
-            "invalid input\n",
-            "to many words\n",
-            "to few words\n",
+            "invalid input characters\n",
+            "to many input values\n",
+            "to few input values\n",
             "Enter input:\n"
     };
-    return messages[condition];
+    return messages[index];
 }
 
-int validate_input(char *str) {
+int validate_input_characters(char *str) {
     char a = *str;
     int res = 1;
     while (*str != '\n') {
@@ -81,7 +76,7 @@ int count_words(const char *str) {
         str++;
     }
 
-    while (*str != '\0') {
+    while (*str != '\0' && *str != '\n') {
         if (*str == 32) {
             if (in_word) {
                 count++;
@@ -96,5 +91,10 @@ int count_words(const char *str) {
         count++;
     }
 
+    if (count > 3) {
+        return 1;
+    } else if (count < 3) {
+        return 2;
+    }
     return count;
 }
