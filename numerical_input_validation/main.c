@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <malloc.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAX_LINE 256
 
@@ -12,9 +15,23 @@ int main() {
     char input[MAX_LINE], *str;
     int char_check, words_check, number_check, active = 1;
 
+
+
     while (active) {
         printf("Enter exactly three integer separated by spaces:\n");
-        str = fgets(input, sizeof(input), stdin);
+
+        fgets(input, sizeof(input), stdin);
+        str = (char *)malloc(sizeof(char) * MAX_LINE);
+        if (strchr(input, '\n') == NULL) {
+            printf("Input is too long\n");
+            exit(1);
+        }
+        if (!str) {
+            printf("Memory allocation error");
+            exit(1);
+        }
+        strcpy(str, input);
+
         char_check = validate_input_characters(str);
         words_check = count_words(str);
         number_check = validate_input_numbers(str);
@@ -23,6 +40,11 @@ int main() {
         if (char_check == 1 && words_check == 3 && number_check == 0) {
             active = 0;
         }
+    }
+
+    if (!str) {
+        free(str);
+        str = NULL;
     }
 
     printf("Success\n");
@@ -43,10 +65,10 @@ void print_message(int x, int y, int z) {
 
 char *messages(int index) {
     char *messages[] = {
-            "invalid input characters\n",
-            "too many input values\n",
-            "too few input values\n",
-            "numbers cannot start with 0\n",
+            "Invalid input characters\n",
+            "Too many input values\n",
+            "Too few input values\n",
+            "Numbers cannot start with 0\n",
     };
     return messages[index];
 }
