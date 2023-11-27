@@ -10,6 +10,7 @@ char *messages(int index);
 int validate_input_characters(char *str);
 void print_message(int x, int y, int z);
 int validate_input_numbers(char * str);
+void save_to_file(char *str);
 
 int main() {
     char input[MAX_LINE], *str;
@@ -38,6 +39,7 @@ int main() {
         print_message(char_check, words_check, number_check);
 
         if (char_check == 1 && words_check == 3 && number_check == 0) {
+            save_to_file(str);
             active = 0;
         }
     }
@@ -141,4 +143,15 @@ int count_words(const char *str) {
         return 2;
     }
     return count;
+}
+
+void save_to_file(char *str) {
+    FILE *file;
+    file = fopen("results", "w");
+    if (!file) {
+        printf("Error while opening file");
+        exit(1);
+    }
+    fprintf(file, "%s", str);
+    fclose(file);
 }
