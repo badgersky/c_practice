@@ -21,7 +21,7 @@ int main() {
         printf("Enter exactly three integer separated by spaces:\n");
 
         fgets(input, sizeof(input), stdin);
-        str = (char *)malloc(sizeof(char) * MAX_LINE);
+        str = (char *)malloc(sizeof(char) * strlen(input));
         if (strchr(input, '\n') == NULL) {
             printf("Input is too long\n");
             exit(1);
