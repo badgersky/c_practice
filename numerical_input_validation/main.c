@@ -98,6 +98,7 @@ int validate_input_characters(char *str) {
         if (a > 47 && a < 58) {
             if (*str == '-') {
                 res = 0;
+                break;
             }
         }
         if (*str == 32 || *str == 45) {
