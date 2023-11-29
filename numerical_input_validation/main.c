@@ -1,19 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #define MAX_LINE 256
 
 int count_words(const char *str);
 char *messages(int index);
 int validate_input_characters(char *str);
-void print_message(int x, int y, int z);
+void print_message(int x, int y, int z, int w);
 int validate_input_numbers(char * str);
 void save_to_file(char *str);
+int check_int_size(char *str);
 
 int main() {
     char input[MAX_LINE], *str;
-    int char_check, words_check, number_check, active = 1;
+    int char_check, words_check, number_check, size_check, active = 1;
 
     while (active) {
         printf("Enter exactly three integer separated by spaces:\n");
@@ -33,9 +35,10 @@ int main() {
         char_check = validate_input_characters(str);
         words_check = count_words(str);
         number_check = validate_input_numbers(str);
-        print_message(char_check, words_check, number_check);
+        size_check = check_int_size(str);
+        print_message(char_check, words_check, number_check, size_check);
 
-        if (char_check == 1 && words_check == 3 && number_check == 0) {
+        if (char_check == 1 && words_check == 3 && number_check == 0 && size_check == 0) {
             save_to_file(str);
             active = 0;
         }
@@ -49,7 +52,7 @@ int main() {
     printf("Success\n");
 }
 
-void print_message(int x, int y, int z) {
+void print_message(int x, int y, int z, int w) {
     if (x == 0) {
         printf("%s", messages(x));
     }
@@ -58,6 +61,9 @@ void print_message(int x, int y, int z) {
     }
     if (z == 3) {
         printf("%s", messages(z));
+    }
+    if (w == 4) {
+        printf("%s", messages(w));
     }
     printf("\n");
 }
@@ -68,6 +74,7 @@ char *messages(int index) {
             "Too many input values\n",
             "Too few input values\n",
             "Numbers cannot start with 0\n",
+            "One or more integers exceed integer limits\n"
     };
     return messages[index];
 }
@@ -94,7 +101,7 @@ int validate_input_characters(char *str) {
     int res = 1;
     while (*str != 10) {
         if (a > 47 && a < 58) {
-            if (*str == '-') {
+            if (*str == 45) {
                 res = 0;
                 break;
             }
@@ -141,6 +148,26 @@ int count_words(const char *str) {
         return 2;
     }
     return count;
+}
+
+int check_int_size(char *str) {
+    char *endptr;
+
+    while (*str != 0 && *str != 10) {
+        if (*str == 45 || *str == 43 || *str == 9) {
+            str++;
+        } else {
+            long num = strtol(str, &endptr, 10);
+            if (num == LONG_MAX || num == LONG_MIN) {
+                return 4;
+            }
+            if (num == 0) {
+                break;
+            }
+            str = endptr;
+        }
+    }
+    return 0;
 }
 
 void save_to_file(char *str) {
