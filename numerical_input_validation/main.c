@@ -15,15 +15,13 @@ int main() {
     char input[MAX_LINE], *str;
     int char_check, words_check, number_check, active = 1;
 
-
-
     while (active) {
         printf("Enter exactly three integer separated by spaces:\n");
 
         fgets(input, sizeof(input), stdin);
         str = (char *)malloc(sizeof(char) * strlen(input));
         if (strchr(input, '\n') == NULL) {
-            printf("Input is too long\n");
+            printf("Input is too long");
             exit(1);
         }
         if (!str) {
@@ -79,7 +77,7 @@ int validate_input_numbers(char * str) {
 
     while (b != '\0') {
         if (b == 48) {
-            if (a == 32 || a == 45) {
+            if (a == 32 || a == 45 || a == 9 || a == 43) {
                 if (c != 32 && c != 10) {
                     return 3;
                 }
@@ -101,7 +99,7 @@ int validate_input_characters(char *str) {
                 break;
             }
         }
-        if (*str == 32 || *str == 45) {
+        if (*str == 32 || *str == 45 || *str == 9 || *str == 43) {
             a = *str;
             str++;
             continue;
@@ -118,12 +116,12 @@ int validate_input_characters(char *str) {
 
 int count_words(const char *str) {
     int count = 0, in_word = 1;
-    while (*str == 32) {
+    while (*str == 32 || *str == 9) {
         str++;
     }
 
     while (*str != 0 && *str != 10) {
-        if (*str == 32) {
+        if (*str == 32 || *str == 9) {
             if (in_word) {
                 count++;
                 in_word = 0;
