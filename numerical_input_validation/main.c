@@ -154,15 +154,15 @@ int check_int_size(char *str) {
     char *endptr;
 
     while (*str != 0 && *str != 10) {
+        if (*str < 48 || *str > 57) {
+            str++;
+        }
         if (*str == 45 || *str == 43 || *str == 9) {
             str++;
         } else {
             long num = strtol(str, &endptr, 10);
             if (num == LONG_MAX || num == LONG_MIN) {
                 return 4;
-            }
-            if (num == 0) {
-                break;
             }
             str = endptr;
         }
