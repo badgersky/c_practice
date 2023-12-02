@@ -16,7 +16,6 @@ void search_text(char *arr[], const char *word, char *result[]);
 int main() {
     char *arr[MAX_LINES], *word, *result[MAX_LINES];
     create_text_array(arr);
-//    print_text_arr(arr);
     word = get_word();
     search_text(arr, word, result);
     print_text_arr(result);
