@@ -26,6 +26,7 @@ int main() {
     validate_input(ret, x, y, len);
     swap_lines(arr, x, y);
     print_text_arr(arr);
+    free_memory(arr, len);
 }
 
 void free_memory(char *arr[], int len) {
