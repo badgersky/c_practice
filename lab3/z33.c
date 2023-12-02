@@ -13,12 +13,16 @@ void print_text_arr(char *arr[]);
 
 void search_text(char *arr[], const char *word, char *result[]);
 
+void free_memory(char *arr[], int len);
+
 int main() {
     char *arr[MAX_LINES], *word, *result[MAX_LINES];
-    create_text_array(arr);
+    int len;
+    len = create_text_array(arr);
     word = get_word();
     search_text(arr, word, result);
     print_text_arr(result);
+    free_memory(arr, len);
 }
 
 char * get_word() {
@@ -83,4 +87,12 @@ int create_text_array(char *arr[]) {
     }
     arr[i] = NULL;
     return i;
+}
+
+void free_memory(char *arr[], int len) {
+    for (int i = 0; i <= len; i++) {
+        if (arr[i]) {
+            free(arr[i]);
+        }
+    }
 }

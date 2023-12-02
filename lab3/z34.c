@@ -11,6 +11,8 @@ int create_text_array(char *arr[]);
 
 void insert_line(char *arr[], int len, char *line, int index);
 
+void free_memory(char *arr[], int len);
+
 int main() {
     char *arr[MAX_LINES], *text = NULL, input[LINE_LEN];
     int index, ret, len;
@@ -34,6 +36,7 @@ int main() {
 
     insert_line(arr, len, text, index);
     print_text_arr(arr);
+    free_memory(arr, len);
 }
 
 void insert_line(char *arr[], int len, char *line, int index) {
@@ -74,4 +77,12 @@ int create_text_array(char *arr[]) {
     }
     arr[i] = NULL;
     return i;
+}
+
+void free_memory(char *arr[], int len) {
+    for (int i = 0; i <= len; i++) {
+        if (arr[i]) {
+            free(arr[i]);
+        }
+    }
 }

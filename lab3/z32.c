@@ -6,22 +6,34 @@
 #define MAX_LINES 200
 
 int create_text_array(char *arr[]);
+
 void validate_input(int ret, int x, int y, int len);
+
 void swap_lines(char *arr[], int x, int y);
+
 void print_text_arr(char *arr[]);
 
-int main()
-{
+void free_memory(char *arr[], int len);
+
+int main() {
     int len, ret, x, y;
     char *arr[MAX_LINES];
     len = create_text_array(arr);
     print_text_arr(arr);
-    printf("\nEnter positions of lines to swap places, number must be in interval 1 - %d\n", len);
+    printf("\nEnter positions of lines to swap places, numbers must be in interval 1 - %d\n", len);
     ret = scanf("%d %d", &x, &y);
     x--, y--;
     validate_input(ret, x, y, len);
     swap_lines(arr, x, y);
     print_text_arr(arr);
+}
+
+void free_memory(char *arr[], int len) {
+    for (int i = 0; i <= len; i++) {
+        if (arr[i]) {
+            free(arr[i]);
+        }
+    }
 }
 
 void print_text_arr(char *arr[]) {
@@ -65,7 +77,7 @@ int create_text_array(char *arr[]) {
     }
 
     while (fgets(input, LINE_LEN, file)) {
-        arr[i] = (char *)malloc((strlen(input) + 1) * sizeof(char));
+        arr[i] = (char *) malloc((strlen(input) + 1) * sizeof(char));
         if (!arr[i]) {
             printf("Memory error");
             exit(1);
