@@ -106,7 +106,7 @@ int check_plus_minus(char *str) {
     int minus_no = 0, plus_no = 0;
     char a = *str;
     while (*str != 10) {
-        if (a > 47 && a < 58) {
+        if ((a > 47 && a < 58) || a == 32 || a == 9) {
             minus_no = 0, plus_no = 0;
         }
 
@@ -135,6 +135,13 @@ int validate_input_characters(char *str) {
     while (*str != 10) {
         if (a > 47 && a < 58) {
             if (*str == 45 || *str == 43) {
+                res = 0;
+                break;
+            }
+        }
+
+        if (a == 45 || a == 43) {
+            if (*str == 32 || *str == 9) {
                 res = 0;
                 break;
             }
