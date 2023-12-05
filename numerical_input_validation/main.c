@@ -74,7 +74,7 @@ char *messages(int index) {
             "Too many input values\n",
             "Too few input values\n",
             "Numbers cannot start with 0\n",
-            "One or more integers exceed integer limits\n"
+            "One or more integers exceeds integer limit\n",
     };
     return messages[index];
 }
@@ -85,7 +85,7 @@ int validate_input_numbers(char * str) {
     while (b != '\0') {
         if (b == 48) {
             if (a == 32 || a == 45 || a == 9 || a == 43) {
-                if (c != 32 && c != 10) {
+                if (c != 32 && c != 10 && c != 9) {
                     return 3;
                 }
             }
@@ -101,7 +101,7 @@ int validate_input_characters(char *str) {
     int res = 1;
     while (*str != 10) {
         if (a > 47 && a < 58) {
-            if (*str == 45) {
+            if (*str == 45 || *str == 43) {
                 res = 0;
                 break;
             }
