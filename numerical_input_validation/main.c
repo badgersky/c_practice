@@ -8,14 +8,15 @@
 int count_words(const char *str);
 char *messages(int index);
 int validate_input_characters(char *str);
-void print_message(int x, int y, int z, int w);
+void print_message(int x, int y, int z, int w, int s);
 int validate_input_numbers(char * str);
 void save_to_file(char *str);
 int check_int_size(char *str);
+int check_plus_minus(char *str);
 
 int main() {
     char input[MAX_LINE], *str;
-    int char_check, words_check, number_check, size_check, active = 1;
+    int char_check, words_check, number_check, size_check, sign_check, active = 1;
 
     while (active) {
         printf("Enter exactly three integer separated by spaces:\n");
@@ -36,9 +37,10 @@ int main() {
         words_check = count_words(str);
         number_check = validate_input_numbers(str);
         size_check = check_int_size(str);
-        print_message(char_check, words_check, number_check, size_check);
+        sign_check = check_plus_minus(str);
+        print_message(char_check, words_check, number_check, size_check, sign_check);
 
-        if (char_check == 1 && words_check == 3 && number_check == 0 && size_check == 0) {
+        if (char_check == 1 && words_check == 3 && number_check == 0 && size_check == 0 && sign_check == 0) {
             save_to_file(str);
             active = 0;
         }
@@ -52,7 +54,7 @@ int main() {
     printf("Success\n");
 }
 
-void print_message(int x, int y, int z, int w) {
+void print_message(int x, int y, int z, int w, int s) {
     if (x == 0) {
         printf("%s", messages(x));
     }
@@ -65,6 +67,9 @@ void print_message(int x, int y, int z, int w) {
     if (w == 4) {
         printf("%s", messages(w));
     }
+    if (s == 5) {
+        printf("%s", messages(s));
+    }
     printf("\n");
 }
 
@@ -75,6 +80,7 @@ char *messages(int index) {
             "Too few input values\n",
             "Numbers cannot start with 0\n",
             "One or more integers exceeds integer limit\n",
+            "More than one plus or minus sign in a row\n"
     };
     return messages[index];
 }
@@ -96,9 +102,36 @@ int validate_input_numbers(char * str) {
     return 0;
 }
 
+int check_plus_minus(char *str) {
+    int minus_no = 0, plus_no = 0;
+    char a = *str;
+    while (*str != 10) {
+        if (a > 47 && a < 58) {
+            minus_no = 0, plus_no = 0;
+        }
+
+        if (*str == 45) {
+            minus_no += 1;
+        }
+
+        if (*str == 43) {
+            plus_no += 1;
+        }
+
+        if (minus_no > 1 || plus_no > 1) {
+            return 5;
+        }
+
+        a = *str;
+        str++;
+    }
+    return 0;
+}
+
 int validate_input_characters(char *str) {
     char a = *str;
     int res = 1;
+
     while (*str != 10) {
         if (a > 47 && a < 58) {
             if (*str == 45 || *str == 43) {
@@ -106,6 +139,7 @@ int validate_input_characters(char *str) {
                 break;
             }
         }
+
         if (*str == 32 || *str == 45 || *str == 9 || *str == 43) {
             a = *str;
             str++;
