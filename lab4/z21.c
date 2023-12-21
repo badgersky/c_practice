@@ -6,7 +6,7 @@ int sum_below_diag(FILE *f, int n, int m, int a, int b);
 
 int main() {
     FILE *fd;
-    fd = fopen("dane21", "r");
+    fd = fopen("dane2122", "r");
     if (!fd) {
         printf("file error");
         exit(1);
@@ -43,4 +43,3 @@ int sum_below_diag(FILE *f, int n, int m, int a, int b) {
     }
     return sum;
 }
-
