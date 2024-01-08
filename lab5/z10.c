@@ -6,27 +6,33 @@ typedef struct CO {
     double im;
 } COMPLEX;
 
-void rkw(double a, double b, double c, COMPLEX *n1, COMPLEX *n2);
+double rkw(double a, double b, double c, COMPLEX *n1, COMPLEX *n2);
 COMPLEX add1(COMPLEX *x1, COMPLEX *x2);
 void add2(COMPLEX *x1, COMPLEX *x2, COMPLEX *res);
 
 int main()
 {
     COMPLEX co_num1, co_num2, sum;
-    double a, b, c;
+    double a, b, c, delta;
     printf("Enter a, b, c:\n");
     scanf("%lf %lf %lf", &a, &b, &c);
-    rkw(a, b, c, &co_num1, &co_num2);
-    printf("x1 = %lf %lf\n", co_num1.re, co_num1.im);
-    printf("x2 = %lf %lf\n", co_num2.re, co_num2.im);
+    delta = rkw(a, b, c, &co_num1, &co_num2);
+
+    if (delta >= 0) {
+        printf("x1 = %lf\n", co_num1.re);
+        printf("x2 = %lf\n", co_num2.re);
+    }
+    else {
+        printf("x1 = %lf %lf\n", co_num1.re, co_num1.im);
+        printf("x2 = %lf %lf\n", co_num2.re, co_num2.im);
+    }
 
     sum = add1(&co_num1, &co_num2);
-    printf("result1 = %lf %lf\n", sum.re, sum.im);
+    printf("sum of x1 and x2 = %lf %lf\n", sum.re, sum.im);
     add2(&co_num1, &co_num2, &sum);
-    printf("result1 = %lf %lf\n", sum.re, sum.im);
 }
 
-void rkw(double a, double b, double c, COMPLEX *n1, COMPLEX *n2) {
+double rkw(double a, double b, double c, COMPLEX *n1, COMPLEX *n2) {
     double delta = b * b - 4 * a * c;
     double re, im;
     if (delta >= 0) {
@@ -45,6 +51,8 @@ void rkw(double a, double b, double c, COMPLEX *n1, COMPLEX *n2) {
         n1->im = im;
         n2->im = -im;
     }
+
+    return delta;
 }
 
 COMPLEX add1(COMPLEX *x1, COMPLEX *x2) {
