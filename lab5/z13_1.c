@@ -5,6 +5,7 @@
 #define MAX_LINE 80
 
 void make_list(FILE* file);
+void display_list();
 
 typedef struct student {
     char *name;
@@ -21,6 +22,22 @@ FILE *fd = NULL;
 int main() {
     fd = fopen("data", "r");
     make_list(fd);
+    display_list();
+}
+
+void display_list() {
+    stud *curr;
+    if (HEAD == (stud*)NULL) {
+        printf("list empty");
+        exit(0);
+    }
+    curr = HEAD;
+
+    while (curr) {
+        printf("\n\n");
+        printf("Name: %s\nSurname: %s\nYear of birth: %d\nAddress: %s\nScholarship: %.2lf", curr->name, curr->surname, curr->birth_year, curr->address, curr->scholarship);
+        curr = (stud *) curr->next;
+    }
 }
 
 void make_list(FILE *file) {
