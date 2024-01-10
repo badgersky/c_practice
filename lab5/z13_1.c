@@ -4,9 +4,6 @@
 
 #define MAX_LINE 80
 
-void make_list(FILE* file);
-void display_list();
-
 typedef struct student {
     char *name;
     char *surname;
@@ -19,10 +16,36 @@ typedef struct student {
 stud *HEAD = NULL;
 FILE *fd = NULL;
 
+void make_list(FILE* file);
+void display_list();
+void max_scholarship(stud **max);
+
 int main() {
+    stud *max_s = NULL;
     fd = fopen("data", "r");
     make_list(fd);
     display_list();
+
+    max_scholarship(&max_s);
+    printf("\n\nThe biggest scholarship has: %s %s - %.2lf", max_s->name, max_s->surname, max_s->scholarship);
+
+}
+
+void max_scholarship(stud **max) {
+    stud *curr, *new;
+    if (HEAD == (stud*)NULL) {
+        printf("list empty");
+        exit(0);
+    }
+    curr = HEAD;
+    *max = curr;
+
+    while (curr) {
+        if (curr->scholarship > (*max)->scholarship) {
+            *max = curr;
+        }
+        curr = (stud*)curr->next;
+    }
 }
 
 void display_list() {
