@@ -24,6 +24,8 @@ void max_scholarship(stud **max);
 
 void push_head(char *name, char *surname, char *address, int birth_year, double scholarship);
 
+void append_student(char *name, char *surname, char *address, int birth_year, double scholarship);
+
 int main() {
     stud *max_s = NULL;
     fd = fopen("data", "r");
@@ -39,8 +41,33 @@ int main() {
             "2137 Oak Street, Hobbiton, Shire, 69420",
             2002,
             1400.
-            );
+    );
 
+    append_student(
+            "Pippin",
+            "Tuk",
+            "2138 Oak Street, Hobbiton, Shire, 69420",
+            2002,
+            1000.
+    );
+
+    display_list();
+}
+
+void append_student(char *name, char *surname, char *address, int birth_year, double scholarship) {
+    stud *s = HEAD;
+    while (s->next != NULL) {
+        s = (stud *) s->next;
+    }
+
+    static stud new;
+    new.name = name;
+    new.surname = surname;
+    new.address = address;
+    new.birth_year = birth_year;
+    new.scholarship = scholarship;
+    new.next = NULL;
+    s->next = (struct stud *) &new;
 }
 
 void push_head(char *name, char *surname, char *address, int birth_year, double scholarship) {
