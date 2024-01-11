@@ -26,6 +26,8 @@ void push_head(char *name, char *surname, char *address, int birth_year, double 
 
 void append_student(char *name, char *surname, char *address, int birth_year, double scholarship);
 
+int len();
+
 int main() {
     stud *max_s = NULL;
     fd = fopen("data", "r");
@@ -50,8 +52,20 @@ int main() {
             2002,
             1000.
     );
+}
 
-    display_list();
+int len() {
+    stud *s = HEAD;
+    int i = 0;
+    if (s == NULL) {
+        return i;
+    }
+
+    while (s->next != NULL) {
+        i += 1;
+        s = (stud *) s->next;
+    }
+    return i + 1;
 }
 
 void append_student(char *name, char *surname, char *address, int birth_year, double scholarship) {
