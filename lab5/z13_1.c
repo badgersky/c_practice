@@ -4,7 +4,7 @@
 
 #define MAX_LINE 80
 
-typedef struct student {
+typedef struct stud {
     char *name;
     char *surname;
     int birth_year;
@@ -16,7 +16,7 @@ typedef struct student {
 stud *HEAD = NULL;
 FILE *fd = NULL;
 
-void make_list(FILE *file);
+void make_list(FILE *file, char *input);
 
 void display_list();
 
@@ -28,19 +28,29 @@ void append_student(char *name, char *surname, char *address, int birth_year, do
 
 int len();
 
+void remove_start();
+
 int main() {
     stud *max_s = NULL;
+    char input[MAX_LINE];
     fd = fopen("data", "r");
-    make_list(fd);
+    if (!fd) {
+        printf("file error");
+        exit(1);
+    }
+
+    make_list(fd, input);
     display_list();
 
     max_scholarship(&max_s);
-    printf("\n\nThe biggest scholarship has: %s %s - %.2lf\n", max_s->name, max_s->surname, max_s->scholarship);
+    printf("\n\nThe biggest scholarship has: %s %s - %.2lf\n\n", max_s->name, max_s->surname, max_s->scholarship);
+
+    printf("Length %d\n", len());
 
     push_head(
             "Merry",
             "Brandybuck",
-            "2137 Oak Street, Hobbiton, Shire, 69420",
+            "2137 Oak Street",
             2002,
             1400.
     );
@@ -48,10 +58,24 @@ int main() {
     append_student(
             "Pippin",
             "Tuk",
-            "2138 Oak Street, Hobbiton, Shire, 69420",
+            "2138 Oak Street",
             2002,
             1000.
     );
+
+    printf("Length %d\n", len());
+    remove_start();
+    printf("Length %d\n", len());
+}
+
+void remove_start() {
+    if (!HEAD) {
+        printf("list empty");
+        exit(1);
+    }
+
+    stud *new_head = HEAD->next;
+    HEAD = new_head;
 }
 
 int len() {
@@ -128,18 +152,22 @@ void display_list() {
     }
 }
 
-void make_list(FILE *file) {
+void make_list(FILE *file, char *input) {
     unsigned len;
-    char input[MAX_LINE];
     stud *curr = NULL, *new = NULL;
     while (fgets(input, MAX_LINE, file)) {
         new = (stud *) malloc(sizeof(stud));
+        if (!new) {
+            printf("memory error");
+            exit(1);
+        }
+
         if (HEAD == (stud *) NULL) {
             HEAD = new;
         } else if (curr != (stud *) NULL) {
-            curr->next = (struct stud *) new;
+            curr->next = new;
         }
-        new->next = (struct stud *) (stud *) NULL;
+        new->next = (stud *) NULL;
 
         len = (unsigned) strlen(input);
         input[len - 1] = 0;

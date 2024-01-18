@@ -79,7 +79,7 @@ char *messages(int index) {
             "Too many input values\n",
             "Too few input values\n",
             "Numbers cannot start with 0\n",
-            "One or more integers exceeds integer limit\n",
+            "One or more integers exceed integer limit\n",
             "More than one plus or minus sign in a row\n"
     };
     return messages[index];
