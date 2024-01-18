@@ -30,6 +30,8 @@ int len();
 
 void remove_start();
 
+void remove_end();
+
 int main() {
     stud *max_s = NULL;
     char input[MAX_LINE];
@@ -66,6 +68,26 @@ int main() {
     printf("Length %d\n", len());
     remove_start();
     printf("Length %d\n", len());
+    remove_end();
+    printf("Length %d\n", len());
+}
+
+void remove_end() {
+    if (!HEAD) {
+        printf("list empty");
+        exit(1);
+    }
+
+    stud* curr = HEAD;
+    stud* prev = NULL;
+    while (curr->next) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    if (prev) {
+        prev->next = NULL;
+    }
 }
 
 void remove_start() {
