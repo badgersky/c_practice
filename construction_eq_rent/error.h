@@ -1,0 +1,1 @@
+void print_errors(int i);
