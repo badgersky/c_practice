@@ -80,3 +80,25 @@ void free_list(EQ *HEAD) {
 
     HEAD = NULL;
 }
+
+void show_list(EQ *HEAD) {
+    EQ * el;
+    if (!HEAD) {
+        print_errors(2);
+        exit(1);
+    } else {
+        el = HEAD;
+    }
+
+    printf("id\tbrand\t\t\t\t\tname\t\t\t\t\tprice\n");
+    while (el) {
+        printf("%d\t%-20s\t%-20s\t%-20.2lf\n", el->id, el->brand, el->name, el->price);
+        el = el->next;
+    }
+}
+
+int main() {
+    EQ* HEAD = make_list();
+    show_list(HEAD);
+    free_list(HEAD);
+}

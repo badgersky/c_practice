@@ -5,6 +5,7 @@ void print_errors(int i) {
     char *errors[] = {
             "File error",
             "Memory error",
+            "List empty",
             "Other error",
     };
 

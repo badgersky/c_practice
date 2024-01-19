@@ -16,3 +16,5 @@ FILE *open_file();
 struct EQ *make_list();
 
 void free_list(EQ *HEAD);
+
+void show_list(EQ *HEAD);
