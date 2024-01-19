@@ -124,7 +124,7 @@ void del_el(int i, EQ **HEAD) {
     EQ *el;
     if (!*HEAD) {
         print_errors(2);
-        exit(1);
+        return;
     } else {
         el = *HEAD;
     }
@@ -158,12 +158,31 @@ void del_el(int i, EQ **HEAD) {
     print_errors(3);
 }
 
+unsigned get_max_id(EQ *HEAD) {
+    EQ *el;
+    if (!HEAD) {
+        print_errors(2);
+        return 0;
+    } else {
+        el = HEAD;
+    }
+
+    unsigned id = 0;
+    while (el) {
+        if (el->id > id) {
+            id = el->id;
+        }
+        el = el->next;
+    }
+
+    return id;
+}
+
 int main() {
     EQ *HEAD = make_list();
     del_el(10, &HEAD);
     del_el(9, &HEAD);
     del_el(2, &HEAD);
-    printf("----------\n");
     show_list(HEAD);
     free_list(HEAD);
 }
