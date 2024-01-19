@@ -206,6 +206,29 @@ unsigned append_element(unsigned max_id, EQ *HEAD, char *name, char *brand, doub
     return max_id + 1;
 }
 
+void save_list(EQ*HEAD) {
+    EQ *el;
+    if (!HEAD) {
+        print_errors(2);
+        return;
+    } else {
+        el = HEAD;
+    }
+
+    FILE *f_out;
+    f_out = fopen("out.b", "wb");
+    if (!f_out) {
+        print_errors(0);
+        return;
+    }
+
+    while (el) {
+
+        fwrite((void *) el, sizeof(EQ), 1, f_out);
+        el = el->next;
+    }
+}
+
 int main() {
     EQ *HEAD = make_list();
     unsigned id = get_max_id(HEAD);
@@ -214,5 +237,7 @@ int main() {
     del_el(2, &HEAD);
     id = append_element(id, HEAD, "lol", "lol", 2137);
     show_list(HEAD);
+    save_list(HEAD);
     free_list(HEAD);
+    printf("done");
 }
