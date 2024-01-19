@@ -85,7 +85,7 @@ EQ *get_el(int i, EQ *HEAD) {
     EQ *el;
     if (!HEAD) {
         print_errors(2);
-        exit(1);
+        return NULL;
     } else {
         el = HEAD;
     }
@@ -108,7 +108,7 @@ void show_list(EQ *HEAD) {
     EQ *el;
     if (!HEAD) {
         print_errors(2);
-        exit(1);
+        return;
     } else {
         el = HEAD;
     }
@@ -120,8 +120,50 @@ void show_list(EQ *HEAD) {
     }
 }
 
+void del_el(int i, EQ **HEAD) {
+    EQ *el;
+    if (!*HEAD) {
+        print_errors(2);
+        exit(1);
+    } else {
+        el = *HEAD;
+    }
+
+    if (el->id == i) {
+        *HEAD = el->next;
+        free(el->name);
+        free(el->brand);
+        free(el);
+        return;
+    }
+
+    EQ *p_el = NULL;
+    while (el->next) {
+        p_el = el;
+        el = el->next;
+
+        if (el->id == i) {
+            p_el->next = el->next;
+            if (el->next) {
+                el->next->prev = p_el;
+            }
+
+            free(el->name);
+            free(el->brand);
+            free(el);
+            return;
+        }
+    }
+
+    print_errors(3);
+}
+
 int main() {
     EQ *HEAD = make_list();
-    EQ *el = get_el(1, HEAD);
+    del_el(10, &HEAD);
+    del_el(9, &HEAD);
+    del_el(2, &HEAD);
+    printf("----------\n");
+    show_list(HEAD);
     free_list(HEAD);
 }

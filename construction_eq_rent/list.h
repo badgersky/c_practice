@@ -20,3 +20,5 @@ void free_list(EQ *HEAD);
 void show_list(EQ *HEAD);
 
 EQ *get_el(int i, EQ *HEAD);
+
+void del_el(int i, EQ **HEAD);
