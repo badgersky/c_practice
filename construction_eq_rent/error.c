@@ -6,6 +6,7 @@ void print_errors(int i) {
             "File error",
             "Memory error",
             "List empty",
+            "No such element in the list",
             "Other error",
     };
 
