@@ -23,6 +23,6 @@ EQ *get_el(int i, EQ *HEAD);
 
 void del_el(int i, EQ **HEAD);
 
-void append_element(EQ *HEAD, char *name, char *brand, double price);
+unsigned append_element(unsigned max_id, EQ *HEAD, char *name, char *brand, double price);
 
 unsigned get_max_id(EQ *HEAD);

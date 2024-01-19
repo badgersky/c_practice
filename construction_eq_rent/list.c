@@ -129,6 +129,7 @@ void del_el(int i, EQ **HEAD) {
         el = *HEAD;
     }
 
+    // delete HEAD element
     if (el->id == i) {
         *HEAD = el->next;
         free(el->name);
@@ -178,11 +179,40 @@ unsigned get_max_id(EQ *HEAD) {
     return id;
 }
 
+unsigned append_element(unsigned max_id, EQ *HEAD, char *name, char *brand, double price) {
+    EQ *new, *last = HEAD;
+
+    new = (EQ *) malloc(sizeof(EQ));
+    if (!new) {
+        print_errors(1);
+        return max_id;
+    }
+
+    new->name = (char *) malloc(sizeof(strlen(name)) + 1);
+    strcpy(new->name, name);
+    new->brand = (char *) malloc(sizeof(strlen(brand)) + 1);
+    strcpy(new->brand, brand);
+    new->price = price;
+    new->id = max_id + 1;
+    new->next = NULL;
+
+    while (last->next) {
+        last = last->next;
+    }
+
+    new->prev = last;
+    last->next = new;
+
+    return max_id + 1;
+}
+
 int main() {
     EQ *HEAD = make_list();
+    unsigned id = get_max_id(HEAD);
     del_el(10, &HEAD);
     del_el(9, &HEAD);
     del_el(2, &HEAD);
+    id = append_element(id, HEAD, "lol", "lol", 2137);
     show_list(HEAD);
     free_list(HEAD);
 }
