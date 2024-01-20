@@ -8,6 +8,7 @@ void print_errors(int i) {
             "List empty",
             "No such element in the list",
             "Other error",
+            "Invalid input"
     };
 
     printf("%s\n", errors[i]);
