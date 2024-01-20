@@ -15,7 +15,7 @@ void show_help() {
     printf("quit/q - quits program\n");
 }
 
-void add_element(int max_id, EQ *HEAD) {
+void add_element(int max_id, EQ **HEAD) {
     char brand[MAX_LINE], name[MAX_LINE];
     double price;
     int ret;
@@ -31,11 +31,11 @@ void add_element(int max_id, EQ *HEAD) {
         return;
     }
 
-    append_element(max_id, HEAD, name, brand, price);
+    append_element(max_id, *HEAD, name, brand, price);
     printf("item added\n");
 }
 
-void delete_element(EQ*HEAD) {
+void delete_element(EQ **HEAD) {
     int id, ret;
     printf("Enter id of element you want to delete:\n");
     ret = scanf("%d", &id);
@@ -44,5 +44,13 @@ void delete_element(EQ*HEAD) {
         return;
     }
 
-    del_el(id, &HEAD);
+    del_el(id, &*HEAD);
+}
+
+void delete_list(EQ **HEAD) {
+    free_list(&*HEAD);
+}
+
+void save_to_bin(EQ **HEAD) {
+    save_list(*HEAD);
 }
