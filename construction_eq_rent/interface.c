@@ -4,35 +4,45 @@
 
 void show_help() {
     printf("Here are available commands:\n");
-    printf("help/h - show available commands\n");
-    printf("add/a - adds element at the end of a list\n");
-    printf("del/d - deletes element with given id\n");
-    printf("free/f - deletes list\n");
-    printf("save/s - saves list to binary file\n");
-    printf("load/l - loads list from binary file\n");
-    printf("get/g - gets element with given id\n");
-    printf("print/p - prints whole list to monitor\n");
-    printf("quit/q - quits program\n");
+    printf("h - show available commands\n");
+    printf("a - adds element at the end of a list\n");
+    printf("d - deletes element with given id\n");
+    printf("f - deletes list\n");
+    printf("s - saves list to binary file\n");
+    printf("l - loads list from binary file\n");
+    printf("g - gets element with given id\n");
+    printf("p - prints whole list to monitor\n");
+    printf("q - quits program\n");
 }
 
-void add_element(int max_id, EQ **HEAD) {
+unsigned add_element(unsigned max_id, EQ **HEAD) {
     char brand[MAX_LINE], name[MAX_LINE];
     double price;
     int ret;
 
-    printf("Enter equipment brand:\n");
-    fgets(brand, MAX_LINE, stdin);
+    printf("Enter equipment brand\n");
+    ret = scanf("%[^\n]%*c", brand);
+    if (ret != 1) {
+        print_errors(5);
+        return max_id;
+    }
+
     printf("Enter equipment name:\n");
-    fgets(name, MAX_LINE, stdin);
+    ret = scanf("%[^\n]%*c", name);
+    if (ret != 1) {
+        print_errors(5);
+        return max_id;
+    }
+
     printf("Enter equipment price:\n");
     ret = scanf("%lf", &price);
     if (ret != 1) {
         print_errors(5);
-        return;
+        return max_id;
     }
 
-    append_element(max_id, *HEAD, name, brand, price);
     printf("item added\n");
+    return append_element(max_id, *HEAD, name, brand, price);
 }
 
 void delete_element(EQ **HEAD) {
