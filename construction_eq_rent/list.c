@@ -269,29 +269,3 @@ EQ *read_list(EQ **HEAD) {
     fclose(file);
     return *HEAD;
 }
-
-int main() {
-    EQ *HEAD = make_list();
-    unsigned id = get_max_id(HEAD);
-    id = append_element(id, HEAD, "lol", "lol", 2137);
-    del_el(2, &HEAD);
-    del_el(10, &HEAD);
-    id = append_element(id, HEAD, "lol2", "lol2", 420);
-    del_el(1, &HEAD);
-    get_el(12, HEAD);
-    show_list(HEAD);
-    save_list(HEAD);
-    free_list(&HEAD);
-    show_list(HEAD);
-    read_list(&HEAD);
-    show_list(HEAD);
-    del_el(3, &HEAD);
-    del_el(4, &HEAD);
-    del_el(5, &HEAD);
-    show_list(HEAD);
-    free_list(&HEAD);
-    show_list(HEAD);
-    if (!HEAD) {
-        printf("done");
-    }
-}
