@@ -245,7 +245,6 @@ EQ *read_list(EQ **HEAD) {
         }
 
         active = fread((void *)el, sizeof(EQ), 1, file);
-
         if (active == 0) {
             if (feof(file)) {
                 free(el);
@@ -291,6 +290,7 @@ int main() {
     del_el(5, &HEAD);
     show_list(HEAD);
     free_list(&HEAD);
+    show_list(HEAD);
     if (!HEAD) {
         printf("done");
     }
