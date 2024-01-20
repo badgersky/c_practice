@@ -54,3 +54,23 @@ void delete_list(EQ **HEAD) {
 void save_to_bin(EQ **HEAD) {
     save_list(*HEAD);
 }
+
+void load_from_bin(EQ **HEAD) {
+    read_list(&*HEAD);
+}
+
+void get_element(EQ *HEAD) {
+    int id, ret;
+    printf("Enter id of element you want to delete:\n");
+    ret = scanf("%d", &id);
+    if (ret != 1) {
+        print_errors(5);
+        return;
+    }
+
+    get_el(id, HEAD);
+}
+
+void print_list(EQ *HEAD) {
+    show_list(HEAD);
+}
