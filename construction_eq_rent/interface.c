@@ -5,7 +5,6 @@
 void show_help() {
     printf("Here are available commands:\n");
     printf("help/h - show available commands\n");
-    printf("init/i - makes list from data text file\n");
     printf("add/a - adds element at the end of a list\n");
     printf("del/d - deletes element with given id\n");
     printf("free/f - deletes list\n");
@@ -14,10 +13,6 @@ void show_help() {
     printf("get/g - gets element with given id\n");
     printf("print/p - prints whole list to monitor\n");
     printf("quit/q - quits program\n");
-}
-
-EQ * init_list() {
-    return make_list();
 }
 
 void add_element(int max_id, EQ *HEAD) {
@@ -38,4 +33,16 @@ void add_element(int max_id, EQ *HEAD) {
 
     append_element(max_id, HEAD, name, brand, price);
     printf("item added\n");
+}
+
+void delete_element(EQ*HEAD) {
+    int id, ret;
+    printf("Enter id of element you want to delete:\n");
+    ret = scanf("%d", &id);
+    if (ret != 1) {
+        print_errors(5);
+        return;
+    }
+
+    del_el(id, &HEAD);
 }
