@@ -243,14 +243,12 @@ EQ* read_list(EQ **HEAD) {
         fgets(brand, sizeof(brand), f_data);
         brand[strcspn(brand, "\n")] = '\0';  // Remove the newline character
 
-//        el->brand = (char*)malloc(strlen(brand) + 1);
         strcpy(el->brand, brand);
 
         char name[MAX_LINE];
         fgets(name, sizeof(name), f_data);
         name[strcspn(name, "\n")] = '\0';  // Remove the newline character
 
-//        el->name = (char*)malloc(strlen(name) + 1);
         strcpy(el->name, name);
 
         fread(&el->price, sizeof(el->price), 1, f_data);
