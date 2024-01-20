@@ -62,6 +62,7 @@ struct EQ *make_list() {
         curr = new;
     }
 
+    fclose(file);
     return HEAD;
 }
 
@@ -197,7 +198,7 @@ unsigned append_element(unsigned max_id, EQ *HEAD, char *name, char *brand, doub
     return max_id + 1;
 }
 
-void save_list(EQ*HEAD) {
+void save_list(EQ *HEAD) {
     EQ *el;
     if (!HEAD) {
         print_errors(2);
@@ -221,70 +222,54 @@ void save_list(EQ*HEAD) {
     fclose(f_out);
 }
 
-EQ* read_list(EQ **HEAD) {
-    FILE *f_data;
-    f_data = fopen("out.dat", "rb");
-
-    if (!f_data) {
-        perror("Error opening file");
+EQ *read_list(EQ **HEAD) {
+    if (HEAD && *HEAD) {
         return *HEAD;
     }
 
-    EQ *el = NULL;
-    EQ *current = *HEAD;
-    int ret;
-
-    while (1) {
-        el = (EQ*)malloc(sizeof(EQ));
-
-        fread(&el->id, sizeof(el->id), 1, f_data);
-
-        char brand[MAX_LINE];
-        fgets(brand, sizeof(brand), f_data);
-        brand[strcspn(brand, "\n")] = '\0';  // Remove the newline character
-
-        strcpy(el->brand, brand);
-
-        char name[MAX_LINE];
-        fgets(name, sizeof(name), f_data);
-        name[strcspn(name, "\n")] = '\0';  // Remove the newline character
-
-        strcpy(el->name, name);
-
-        fread(&el->price, sizeof(el->price), 1, f_data);
-
-        EQ *nextTemp;
-        ret = fread(&nextTemp, sizeof(nextTemp), 1, f_data);
-        el->next = nextTemp;
-
-        if (ret != 1) {
-            free(el);
-            break;
-        }
-
-        EQ *prevTemp;
-        fread(&prevTemp, sizeof(prevTemp), 1, f_data);
-        el->prev = prevTemp;
-
-        if (!*HEAD) {
-            *HEAD = el;
-            current = *HEAD;
-        } else {
-            current->next = el;
-            el->prev = current;
-            current = el;
-        }
-
-        if (!el->next) {
-            break;
-        }
+    FILE *file = fopen("out.dat", "rb");
+    if (!file) {
+        print_errors(0);
+        return NULL;
     }
 
-    fclose(f_data);
+    EQ *el = NULL;
+    EQ *tail = NULL;
+    size_t active;
 
+    while (1) {
+        el = (EQ *)malloc(sizeof(EQ));
+        if (!el) {
+            print_errors(1);
+            exit(1);
+        }
+
+        active = fread((void *)el, sizeof(EQ), 1, file);
+
+        if (active == 0) {
+            if (feof(file)) {
+                free(el);
+                break;
+            } else {
+                print_errors(4);
+                return NULL;
+            }
+        }
+
+        el->prev = tail;
+        el->next = NULL;
+
+        if (tail) {
+            tail->next = el;
+        } else {
+            *HEAD = el;
+        }
+        tail = el;
+    }
+
+    fclose(file);
     return *HEAD;
 }
-
 
 int main() {
     EQ *HEAD = make_list();
@@ -292,18 +277,21 @@ int main() {
     id = append_element(id, HEAD, "lol", "lol", 2137);
     del_el(2, &HEAD);
     del_el(10, &HEAD);
+    id = append_element(id, HEAD, "lol2", "lol2", 420);
+    del_el(1, &HEAD);
+    get_el(12, HEAD);
     show_list(HEAD);
     save_list(HEAD);
     free_list(&HEAD);
-    if (!HEAD) {
-        printf("lol");
-    }
-
+    show_list(HEAD);
     read_list(&HEAD);
     show_list(HEAD);
-    if (!HEAD) {
-        printf("lol");
-    }
+    del_el(3, &HEAD);
+    del_el(4, &HEAD);
+    del_el(5, &HEAD);
+    show_list(HEAD);
     free_list(&HEAD);
-    printf("done");
+    if (!HEAD) {
+        printf("done");
+    }
 }
