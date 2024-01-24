@@ -4,46 +4,50 @@
 int main() {
     EQ *HEAD = make_list();
     unsigned max_id = get_max_id(HEAD);
-    print_list(HEAD);
-    add_element(&max_id, &HEAD);
-    printf("%d\n", max_id);
+    char choice;
+    show_help();
 
-//    while (1) {
-//        printf("To see available commands type h:\n");
-//        printf("Enter command character:\n");
-//        ret = scanf("%c", &input);
-//        if (ret != 1) {
-//            print_errors(5);
-//            continue;
-//        }
-//
-//        switch (input) {
-//            case 'h':
-//                show_help();
-//            case 'q':
-//                break;
-//            case 'a':
-//                max_id = add_element(max_id, HEAD);
-//            case 'd':
-//                delete_element(&HEAD);
-//            case 'f':
-//                delete_list(&HEAD);
-//                free_list(&HEAD);
-//                max_id = 0;
-//            case 's':
-//                save_to_bin(&HEAD);
-//                free_list(&HEAD);
-//                max_id = 0;
-//            case 'l':
-//                load_from_bin(&HEAD);
-//                max_id = get_max_id(HEAD);
-//            case 'g':
-//                get_element(HEAD);
-//            case 'p':
-//                print_list(HEAD);
-//            default:
-//                printf("Unknown command\n");
-//                continue;
-//        }
-//    }
+    do {
+        printf("\nEnter command character:\n");
+
+        scanf(" %c", &choice);
+        getchar();
+
+        switch (choice) {
+            case 'h':
+                show_help();
+                break;
+            case 'a':
+                add_element(&max_id, &HEAD);
+                break;
+            case 'd':
+                delete_element(&HEAD);
+                break;
+            case 'f':
+                delete_list(&HEAD);
+                break;
+            case 's':
+                save_to_bin(&HEAD);
+                break;
+            case 'l':
+                load_from_bin(&HEAD);
+                max_id = get_max_id(HEAD);
+                break;
+            case 'g':
+                get_element(HEAD);
+                break;
+            case 'p':
+                print_list(HEAD);
+                break;
+            case 'q':
+                printf("Exiting program. Goodbye!\n");
+                free_list(&HEAD); // Make sure to free memory before quitting
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+
+    } while (choice != 'q');
+
+    return 0;
 }

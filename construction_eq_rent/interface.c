@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "list.h"
 #include "error.h"
 
@@ -15,27 +17,37 @@ void show_help() {
     printf("q - quits program\n");
 }
 
+void remove_newline(char *str) {
+    size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\n') {
+        str[len - 1] = 0;
+    }
+}
+
 void add_element(unsigned *max_id, EQ **HEAD) {
     char brand[MAX_LINE], name[MAX_LINE];
     double price;
     int ret;
 
     printf("Enter equipment brand\n");
-    ret = scanf("%[^\n]%*c", brand);
-    if (ret != 1) {
+    if (!fgets(brand, MAX_LINE, stdin)) {
         print_errors(5);
+        exit(1);
     }
+    remove_newline(brand);
 
     printf("Enter equipment name:\n");
-    ret = scanf("%[^\n]%*c", name);
-    if (ret != 1) {
+    if (!fgets(name, MAX_LINE, stdin)) {
         print_errors(5);
+        exit(1);
     }
+    remove_newline(name);
 
     printf("Enter equipment price:\n");
     ret = scanf("%lf", &price);
     if (ret != 1) {
         print_errors(5);
+        exit(1);
     }
 
     printf("item added\n");
@@ -48,22 +60,34 @@ void delete_element(EQ **HEAD) {
     ret = scanf("%d", &id);
     if (ret != 1) {
         print_errors(5);
-        return;
+        exit(1);
     }
 
     del_el(id, &*HEAD);
 }
 
 void delete_list(EQ **HEAD) {
-    free_list(&*HEAD);
+    char answer = 0;
+    printf("Are you sure you want to delete list: [y/n]\n");
+    scanf("%c", &answer);
+
+    if (answer == 'y') {
+        free_list(&*HEAD);
+        printf("List deleted\n");
+    } else {
+        printf("List not deleted\n");
+    }
+
 }
 
 void save_to_bin(EQ **HEAD) {
     save_list(*HEAD);
+    printf("List saved to file out.dat\n");
 }
 
 void load_from_bin(EQ **HEAD) {
     read_list(&*HEAD);
+    printf("list loaded from file out.dat\n");
 }
 
 void get_element(EQ *HEAD) {
@@ -72,7 +96,7 @@ void get_element(EQ *HEAD) {
     ret = scanf("%d", &id);
     if (ret != 1) {
         print_errors(5);
-        return;
+        exit(1);
     }
 
     get_el(id, HEAD);
