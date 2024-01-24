@@ -15,7 +15,7 @@ void show_help() {
     printf("q - quits program\n");
 }
 
-unsigned add_element(unsigned max_id, EQ **HEAD) {
+void add_element(unsigned *max_id, EQ **HEAD) {
     char brand[MAX_LINE], name[MAX_LINE];
     double price;
     int ret;
@@ -24,25 +24,22 @@ unsigned add_element(unsigned max_id, EQ **HEAD) {
     ret = scanf("%[^\n]%*c", brand);
     if (ret != 1) {
         print_errors(5);
-        return max_id;
     }
 
     printf("Enter equipment name:\n");
     ret = scanf("%[^\n]%*c", name);
     if (ret != 1) {
         print_errors(5);
-        return max_id;
     }
 
     printf("Enter equipment price:\n");
     ret = scanf("%lf", &price);
     if (ret != 1) {
         print_errors(5);
-        return max_id;
     }
 
     printf("item added\n");
-    return append_element(max_id, *HEAD, name, brand, price);
+    *max_id = append_element(*max_id, *HEAD, name, brand, price);
 }
 
 void delete_element(EQ **HEAD) {
@@ -71,7 +68,7 @@ void load_from_bin(EQ **HEAD) {
 
 void get_element(EQ *HEAD) {
     int id, ret;
-    printf("Enter id of element you want to delete:\n");
+    printf("Enter id of element you want to see:\n");
     ret = scanf("%d", &id);
     if (ret != 1) {
         print_errors(5);

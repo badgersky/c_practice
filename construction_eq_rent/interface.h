@@ -4,7 +4,7 @@ void show_help();
 
 EQ * init_list();
 
-unsigned int add_element(unsigned max_id, EQ *HEAD);
+void add_element(unsigned *max_id, EQ **HEAD);
 
 void delete_element(EQ**HEAD);
 

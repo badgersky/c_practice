@@ -34,7 +34,7 @@ struct EQ *make_list() {
         if (!HEAD) {
             HEAD = new;
             HEAD->prev = NULL;
-        } else {
+        } else if (curr) {
             curr->next = new;
         }
         new->next = NULL;
@@ -260,12 +260,16 @@ EQ *read_list(EQ **HEAD) {
 
         if (tail) {
             tail->next = el;
-        } else {
+        } else if (HEAD){
             *HEAD = el;
         }
         tail = el;
     }
 
     fclose(file);
-    return *HEAD;
+    if (HEAD) {
+        return *HEAD;
+    } else {
+        return NULL;
+    }
 }
