@@ -15,7 +15,7 @@ int main() {
     pthread_create(&th_id2, NULL, &print_ids, NULL);
 
     pthread_join(th_id1, NULL);
-    pthread_join(th_id1, NULL);
+    pthread_join(th_id2, NULL);
 
     return 0;
 }
